@@ -1,0 +1,13 @@
+{
+  "name": "listerlyify-server",
+  "version": "0.0.1",
+  "description": "GraphQL Server for interacting with the Twitter API",
+  "main": "index.js",
+  "repository": "git@github.com:listerlyify/listerlyify-server.git",
+  "author": "Nicholas Cronquist",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "apollo-server-express": "^2.12.0"
+  }
+}

@@ -1,21 +1,4 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "moduleResolution": "Node",
-    "esModuleInterop": true,
-    "sourceMap": true,
-    "strict": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedParameters": true,
-    "noUnusedLocals": true,
-    "forceConsistentCasingInFileNames": true,
-    "outDir": "./build",
-    "allowJs": true,
-    "target": "ES2019"
-  },
-  "include": [
-    "./src/**/*"
-  ]
+  "extends": "./tsconfig-base",
+  "include": ["src/**/*.ts", "test/**/*.ts"]
 }

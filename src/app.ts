@@ -9,15 +9,18 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    hello: () => 'Hello World',
+    hello: (): string => 'Hello World',
   },
 };
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const gqlServer = new ApolloServer({ typeDefs, resolvers });
 
 const app = express();
-server.applyMiddleware({ app });
 
-app.listen({ port: 4000 }, () => {
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-});
+// Express configuration
+app.set('port', process.env.PORT || 4000);
+
+// Configure GraphQL Server
+gqlServer.applyMiddleware({ app });
+
+export { app, gqlServer };

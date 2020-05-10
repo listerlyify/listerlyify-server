@@ -4,7 +4,8 @@ import { app } from '../src/app';
 describe('test app server', () => {
   it('graphql endpoint returns successful response', async () => {
     expect.assertions(1);
-    await request(app).get('/graphql').set('Accept', 'text/html').expect(200);
+    const res = await request(app).get('/graphql').set('Accept', 'text/html');
+    expect(res.status).toStrictEqual(200);
   });
 });
 
@@ -17,11 +18,9 @@ describe('graphql server', () => {
         query: helloWorldQuery,
         variables: null,
       };
-      const res = await request(app)
-        .post('/graphql')
-        .send(postData)
-        .expect(200);
+      const res = await request(app).post('/graphql').send(postData);
 
+      expect(res.status).toStrictEqual(200);
       expect(res.body.data.hello).toBe('Hello World');
     });
   });

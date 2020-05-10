@@ -1,4 +1,4 @@
-const { app, gqlServer } = require('./app');
+import { app, gqlServer } from './app';
 
 
 const server = app.listen(app.get('port'), () => {
@@ -11,4 +11,4 @@ const server = app.listen(app.get('port'), () => {
   console.log('  Press CTRL-C to stop\n');
 });
 
-module.exports = server;
+export default server;

@@ -1,0 +1,34 @@
+name: CI
+
+# Controls when the action will run.
+# Since all changes should go through pull request, workflow will always run
+# for PRs.
+# Once we merge a PR, we want to run this workflow one final time on the master
+# branch for verification and so the push event is only triggered for that
+# branch.
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+    - name: Install Dependencies
+      run: yarn install
+
+    - name: Check formatting and linting
+      run: yarn lint
+
+    - name: Run Tests
+      run: yarn test
+
+    - name: Run Coverage
+      run: yarn test --coverage

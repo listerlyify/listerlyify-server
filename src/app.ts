@@ -1,5 +1,5 @@
-const express = require('express');
-const { ApolloServer, gql } = require('apollo-server-express');
+import express from 'express';
+import { ApolloServer, gql } from 'apollo-server-express';
 
 const typeDefs = gql`
   type Query {
@@ -9,7 +9,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    hello: () => 'Hello World',
+    hello: (): string => 'Hello World',
   },
 };
 
@@ -21,7 +21,7 @@ app.set('port', process.env.PORT || 4000);
 
 gqlServer.applyMiddleware({ app });
 
-module.exports = {
+export {
   app,
   gqlServer
 };

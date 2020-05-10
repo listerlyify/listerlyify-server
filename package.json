@@ -14,10 +14,10 @@
     "qs": "yarn quick-start",
     "quick-start": "node build/server.js",
     "start": "yarn build && yarn quick-start",
-    "test": "jest --forceExit",
+    "test": "NODE_ENV=test jest --forceExit",
     "watch": "concurrently yarn:watch-node yarn:watch-ts",
     "watch-node": "nodemon build/server.js",
-    "watch-test": "yarn test --watchAll",
+    "watch-test": "NODE_ENV=test yarn test --watchAll",
     "watch-ts": "tsc -w -p tsconfig-build.json"
   },
   "dependencies": {

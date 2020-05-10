@@ -1,22 +1,17 @@
 import request from 'supertest';
 import { app } from '../src/app';
 
-beforeAll(() => {
-    process.env.NODE_ENV = 'test';
-});
-
-describe('Test App Server', () => {
-  test('graphql endpoint returns successful response', async () => {
-    await request(app)
-      .get('/graphql')
-      .set('Accept', 'text/html')
-      .expect(200);
+describe('test app server', () => {
+  it('graphql endpoint returns successful response', async () => {
+    expect.assertions(1);
+    await request(app).get('/graphql').set('Accept', 'text/html').expect(200);
   });
 });
 
-describe('GraphQL Server', () => {
-  describe('Hello Query', () => {
-    test('returns hello world', async () => {
+describe('graphql server', () => {
+  describe('hello query', () => {
+    it('returns hello world', async () => {
+      expect.assertions(2);
       const helloWorldQuery = 'query hello { hello }';
       const postData = {
         query: helloWorldQuery,

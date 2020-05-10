@@ -21,7 +21,4 @@ app.set('port', process.env.PORT || 4000);
 
 gqlServer.applyMiddleware({ app });
 
-export {
-  app,
-  gqlServer
-};
+export { app, gqlServer };

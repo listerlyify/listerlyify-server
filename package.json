@@ -21,7 +21,7 @@
     "watch-ts": "tsc -w -p tsconfig-build.json"
   },
   "dependencies": {
-    "apollo-server-express": "^2.13.0",
+    "apollo-server-express": "^2.14.2",
     "express": "^4.17.1"
   },
   "devDependencies": {

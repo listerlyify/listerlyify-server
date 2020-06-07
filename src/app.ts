@@ -1,7 +1,11 @@
 import express from 'express';
 import { ApolloServer, gql } from 'apollo-server-express';
 import config from 'config';
-import { getAuthTwitter, getAuthCallbackTwitter } from './routes/authRoutes';
+import {
+  getJwks,
+  getAuthTwitter,
+  getAuthCallbackTwitter,
+} from './routes/authRoutes';
 
 const typeDefs = gql`
   type Query {
@@ -21,6 +25,7 @@ const app: express.Application = express();
 
 app.set('port', config.get<number>('app.port'));
 
+app.get('/auth/jwks', getJwks);
 app.get('/auth/twitter', getAuthTwitter);
 app.get('/auth/callback/twitter', getAuthCallbackTwitter);
 

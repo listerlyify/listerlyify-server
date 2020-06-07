@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc -p tsconfig-build.json",
     "format": "eslint . --ext .ts --quiet --fix",
-    "lint": "tsc -p tsconfig.json --noEmit && eslint . --ext .ts",
+    "lint": "tsc -p tsconfig.json --noEmit && eslint . --ext .ts && editorconfig-checker",
     "qs": "yarn quick-start",
     "quick-start": "node build/server.js",
     "start": "yarn build && yarn quick-start",
@@ -37,6 +37,7 @@
     "@typescript-eslint/parser": "^2.31.0",
     "chai": "^4.2.0",
     "concurrently": "^5.2.0",
+    "editorconfig-checker": "^3.1.0",
     "eslint": "^7.0.0",
     "eslint-config-airbnb-typescript": "^7.2.1",
     "eslint-config-prettier": "^6.11.0",

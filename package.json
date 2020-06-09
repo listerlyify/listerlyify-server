@@ -12,21 +12,23 @@
     "format": "eslint . --ext .ts --quiet --fix",
     "lint": "tsc -p tsconfig.json --noEmit && eslint . --ext .ts && editorconfig-checker",
     "qs": "yarn quick-start",
-    "quick-start": "node build/server.js",
+    "quick-start": "NODE_CONFIG_DIR=./src/config node build/server.js",
     "start": "yarn build && yarn quick-start",
-    "test": "mocha",
+    "test": "NODE_ENV=test NODE_CONFIG_DIR=./src/config mocha",
     "watch": "concurrently yarn:watch-node yarn:watch-ts",
-    "watch-node": "nodemon build/server.js",
+    "watch-node": "NODE_CONFIG_DIR=./src/config nodemon build/server.js",
     "watch-test": "yarn test --watch",
     "watch-ts": "tsc -w -p tsconfig-build.json"
   },
   "dependencies": {
     "apollo-server-express": "^2.14.2",
+    "config": "^3.3.1",
     "express": "^4.17.1",
     "twitter-lite": "^0.13.0"
   },
   "devDependencies": {
     "@types/chai": "^4.2.11",
+    "@types/config": "^0.0.36",
     "@types/eslint": "^6.8.0",
     "@types/express": "^4.17.6",
     "@types/mocha": "^7.0.2",

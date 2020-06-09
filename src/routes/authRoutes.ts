@@ -1,14 +1,16 @@
 import express from 'express';
 import Twitter from 'twitter-lite';
+import config from 'config';
 
 // This Twitter client only contains the consumerKey and consumer secret so it
 // can only be used for API requests to initialize auth
 const authClient = new Twitter({
-  consumer_key: process.env.TWITTER_CONSUMER_KEY!,
-  consumer_secret: process.env.TWITTER_CONSUMER_SECRET!,
+  consumer_key: config.get<string>('auth.twitter.consumerKey'),
+  consumer_secret: config.get<string>('auth.twitter.consumerSecret'),
 });
 
 async function getAuthTwitter(_req: express.Request, res: express.Response) {
+  const callbackBaseUrl = config.get<string>('auth.twitter.callbackBaseUrl');
   try {
     // The typing for the twitter-lite library is incorrect and doesn't think
     // the oauth_token value exists on the getRequestToken response
@@ -16,7 +18,7 @@ async function getAuthTwitter(_req: express.Request, res: express.Response) {
     // typing issue in the twitter-lite library
     // @ts-ignore TS2339
     const { oauth_token: oauthToken } = await authClient.getRequestToken(
-      'http://localhost:4000/auth/callback/twitter',
+      `${callbackBaseUrl}/auth/callback/twitter`,
     );
 
     return res.redirect(

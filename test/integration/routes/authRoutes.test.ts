@@ -4,6 +4,25 @@ import { assert } from 'chai';
 import { app } from '../../../src/app';
 
 describe('test /auth routes', () => {
+  describe('test /jwks route', () => {
+    it('should return a JSON Web Token Set', async () => {
+      const expectedJwks = {
+        keys: [
+          {
+            kty: 'RSA',
+            n:
+              '2xGgL2Ky0KxAaS2vaKsFv5rM51Z81C-A5fqta9jcuqueTRyOqLUIovkpJsxPXgeW-iyx4jq7mKjJ-nkOt6vAgGs70dbaGfab9xqOZXtn-S6gJkUtuSobOywRTHjEVrhGKtEFYQbhf5llUJATclwZVrXOr5CHsO0jG75-_4qgxbphwx1K0uhx_mGI6ynMXVKvCcMhRmk6aUvmn4G9mLvXJ6DT_uQyE7f_4SsyqeVizivG-zgcxjrTcjHCPGZNA8omZR0djZC6WbAXiLX3BWhwUigxtVMDWcP2F0ZL9M3t0WiIW08p_ZaLY21REtmD39xSDU9u-FmQtAEynk3OxVFSJQ',
+            e: 'AQAB',
+            alg: 'RS256',
+            use: 'sig',
+            kid: '5fd88cf7885acbd698f581934a1fcc31',
+          },
+        ],
+      };
+      const res = await request(app).get('/auth/jwks');
+      assert.deepEqual(res.body, expectedJwks);
+    });
+  });
   describe('test /twitter auth route', () => {
     it('should return a redirect with a valid oauth_token on success', async () => {
       nock('https://api.twitter.com:443')

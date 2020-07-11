@@ -1,6 +1,7 @@
 import express from 'express';
 import Twitter from 'twitter-lite';
 import config from 'config';
+import { jwks } from '../lib/jwtAuth';
 
 // This Twitter client only contains the consumerKey and consumer secret so it
 // can only be used for API requests to initialize auth
@@ -8,6 +9,10 @@ const authClient = new Twitter({
   consumer_key: config.get<string>('auth.twitter.consumerKey'),
   consumer_secret: config.get<string>('auth.twitter.consumerSecret'),
 });
+
+function getJwks(_req: express.Request, res: express.Response) {
+  res.json(jwks);
+}
 
 async function getAuthTwitter(_req: express.Request, res: express.Response) {
   const callbackBaseUrl = config.get<string>('auth.twitter.callbackBaseUrl');
@@ -72,4 +77,4 @@ async function getAuthCallbackTwitter(
   }
 }
 
-export { getAuthTwitter, getAuthCallbackTwitter };
+export { getJwks, getAuthTwitter, getAuthCallbackTwitter };

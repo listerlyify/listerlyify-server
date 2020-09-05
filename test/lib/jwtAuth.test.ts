@@ -1,5 +1,11 @@
 import { assert } from 'chai';
 import decache from 'decache';
+import { createJwt } from '../../src/lib/jwtAuth';
+
+function base64Decode(data: string): string {
+  const buff = Buffer.from(data, 'base64');
+  return buff.toString('utf-8');
+}
 
 describe('jwtAuth', () => {
   describe('jwks', () => {
@@ -21,4 +27,18 @@ describe('jwtAuth', () => {
       decache('../../src/lib/jwtAuth');
     });
   });
+
+  describe('jwts', () => {
+    it('should return a jwt', () => {
+      const sub = 'u%3D12345678'
+      const jwt = createJwt({ sub });
+      const jwtArr = jwt.split('.');
+      const header = JSON.parse(base64Decode(jwtArr[0]));
+      const body = JSON.parse(base64Decode(jwtArr[1]));
+
+      assert.hasAllKeys(header, ['alg', 'typ']);
+      assert.hasAllKeys(body, ['sub', 'aud', 'exp', 'iat']);
+      assert.equal(body.sub, sub);
+    })
+  })
 });

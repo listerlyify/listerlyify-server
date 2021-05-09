@@ -1,8 +1,9 @@
-import os from 'os';
+// import os from 'os';
 import { pem2jwk, RSA_JWK } from 'pem-jwk';
-import crypto from 'crypto';
-import config from 'config';
+// import crypto from 'crypto';
+// import config from 'config';
 import jsonwebtoken from 'jsonwebtoken';
+import config from './config';
 
 /**
 ## JSON Web Key (JWK) Format
@@ -59,30 +60,37 @@ interface JsonWebKeySet {
   keys: RSA_JWK[];
 }
 
-interface RSAKeyPair {
-  public: string;
-  private: string;
+// interface RSAKeyPair {
+//   public: string;
+//   private: string;
+//   keyid:
+// }
+
+interface RSAKey {
+  public: string,
+  private: string,
+  keyid: string
 }
 
-let rsaKeys: RSAKeyPair[] = [config.get('rsaKeys.active')];
+let rsaKeys: RSAKey[] = [config.rsaKeys.active];
 
-if (config.has('rsaKeys?.rotated.public')) {
-  rsaKeys = [...rsaKeys, config.get('rsaKeys.rotated')];
+if (config.rsaKeys.rotated?.public) {
+  rsaKeys = [...rsaKeys, config.rsaKeys.rotated];
 }
 
-const publicKeys = rsaKeys.map(({ public: publicKey }) => {
-  // TODO: Create a Typescript safe config module and move this there
-  // If the rsa keys are being set as environment variables, they will need to
-  // contain \n as the delimiter for the new lines. This function replaces
-  // those \n with the actaul end of line character to properly format the
-  // key in pem format
-  const rsaKey = publicKey.replace(/\\n/g, os.EOL);
-  const key = pem2jwk(rsaKey);
+const publicKeys = rsaKeys.map(({ public: publicKey, keyid }) => {
+  // // TODO: Create a Typescript safe config module and move this there
+  // // If the rsa keys are being set as environment variables, they will need to
+  // // contain \n as the delimiter for the new lines. This function replaces
+  // // those \n with the actual end of line character to properly format the
+  // // key in pem format
+  // const rsaKey = publicKey.replace(/\\n/g, os.EOL);
+  const key = pem2jwk(publicKey);
   const header = {
     alg: 'RS256',
     kty: 'RSA',
     use: 'sig',
-    kid: crypto.createHash('MD5').update(rsaKey).digest('hex'),
+    kid: keyid,
   };
 
   return { ...key, ...header };
@@ -92,8 +100,8 @@ const publicJwks: JsonWebKeySet = {
   keys: publicKeys,
 };
 
-const activePublicKey = config.get<string>('rsaKeys.active.public');
-const activePrivateKey = config.get<string>('rsaKeys.active.private');
+// const activePublicKey = config.get<string>('rsaKeys.active.public');
+// const activePrivateKey = config.get<string>('rsaKeys.active.private');
 
   // iss (issuer): Issuer of the JWT
   // sub (subject): Subject of the JWT (the user)
@@ -122,7 +130,7 @@ function createJwt({
     exp,
   }
 
-  return jsonwebtoken.sign(jwtObj, activePrivateKey, { keyid: ac})
+  return jsonwebtoken.sign(jwtObj, config.rsaKeys.active.private, { keyid: config.rsaKeys.active.keyid})
 }
 
 function validateAndParseJwt(jwt) {

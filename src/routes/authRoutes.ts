@@ -1,6 +1,6 @@
 import express from 'express';
 import Twitter from 'twitter-lite';
-import config from 'config';
+import config from './config';
 import { jwks } from '../lib/jwtAuth';
 
 // This Twitter client only contains the consumerKey and consumer secret so it

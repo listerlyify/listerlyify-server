@@ -1,4 +1,14 @@
+import os from 'os';
 import config from 'config';
+import crypto from 'crypto';
+
+const activePublicKey = config.get<string>('rsaKeys.active.public').replace(/\\n/g, os.EOL)
+const activePrivateKey = config.get<string>('rsaKeys.active.private').replace(/\\n/g, os.EOL)
+const activeKeyID = crypto.createHash('MD5').update(activePrivateKey).digest('hex')
+
+const rotatedPublicKey = config.get<string>('rsaKeys.rotated.public').replace(/\\n/g, os.EOL)
+const rotatedPrivateKey = config.get<string>('rsaKeys.rotated.private').replace(/\\n/g, os.EOL)
+const rotatedKeyID = crypto.createHash('MD5').update(rotatedPrivateKey).digest('hex')
 
 interface Config {
   app: AppConfig,
@@ -44,31 +54,40 @@ const typedConfig: Config = {
   },
   rsaKeys: {
     active: {
-      public:
+      public: activePublicKey,
+      private: activePrivateKey,
+      keyid: activeKeyID,
+    },
+    rotated: {
+      public: rotatedPublicKey,
+      private: rotatedPrivateKey,
+      keyid: rotatedKeyID,
     }
   }
 };
 
 
-export = {
-  app: {
-    port: 4000,
-  },
-  auth: {
-    twitter: {
-      consumerKey: undefined,
-      consumerSecret: undefined,
-      callbackBaseUrl: undefined,
-    },
-  },
-  rsaKeys: {
-    active: {
-      public: undefined,
-      private: undefined,
-    },
-    rotated: {
-      public: undefined,
-      private: undefined,
-    },
-  },
-};
+// export = {
+//   app: {
+//     port: 4000,
+//   },
+//   auth: {
+//     twitter: {
+//       consumerKey: undefined,
+//       consumerSecret: undefined,
+//       callbackBaseUrl: undefined,
+//     },
+//   },
+//   rsaKeys: {
+//     active: {
+//       public: undefined,
+//       private: undefined,
+//     },
+//     rotated: {
+//       public: undefined,
+//       private: undefined,
+//     },
+//   },
+// };
+
+export = typedConfig;
